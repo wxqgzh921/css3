@@ -49,27 +49,10 @@
         var left2 = $("#card2").offset().left-451.5;
         var left3 = $("#card3").offset().left-451.5;
 
-        var arr = [];
-        var sortarr =[];
-        arr.push(left1,left2,left3)
-        console.log(arr);
-        function sort(){
-            arr.sort(function(){
-                return (0.5-Math.random());
-            })
-            console.log(arr);
-            
-             $('.project').each(function(index,item){
-                for(var i = 0 ; i < arr.length; i++){
-                     $('.project').eq(0).css({'position':'absolute', 'left':+ arr[0] +'px'})
-                     $('.project').eq(1).css({'position':'absolute', 'left':+ arr[1] +'px'})
-                     $('.project').eq(2).css({'position':'absolute', 'left':+ arr[2] +'px'})
-                }
-             })
-        }
 
-        // sortarr.push(arr);
-        //     console.log(sortarr)
+        var arr = [];
+        arr.push(left1,left2,left3)
+
 
         var repeat = 6;
         var time = setInterval(function(){
@@ -80,7 +63,47 @@
                 sort();
             }
         },1000);
-        
+
+        function sort(){
+            var crr = arr.concat()   //深复制数组准备工作
+            arr.sort(function(){
+                return (0.5-Math.random());
+            })
+
+            var mergeArr = crr.map((item,index)=>{
+                if(item == arr[index]){
+                    return item
+                }
+
+                return 'A'
+            })
+
+            // if(~mergeArr.indexOf('A')){
+            //     console.log('没有找到A','11','没有A，就说明前后两个数组是重复的')
+            //     sort()
+            // }
+
+            mergeArr.indexOf('A') == -1 && sort()
+
+
+             $('.project').each(function(index,item){
+                for(var i = 0 ; i < arr.length; i++){
+                     $('.project').eq(0).css({'position':'absolute', 'left':+ arr[0] +'px'})
+                     $('.project').eq(1).css({'position':'absolute', 'left':+ arr[1] +'px'})
+                     $('.project').eq(2).css({'position':'absolute', 'left':+ arr[2] +'px'})
+                }
+             })
+        }   
+
+        /*   一个6种排列规则   */
+        // A     B    C
+        // 0     1    2
+        // 0     2    1
+        // 1     0    2
+        // 1     2    0
+        // 2     1    0
+        // 2     0    1
+
  })
         
 </script>
