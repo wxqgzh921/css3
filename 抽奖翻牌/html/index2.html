@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Title</title>
+   <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+   <style>
+.out{
+           width: 150px;
+height: 250px;
+margin:50px;
+float: left;
+text-align: center;
+line-height: 250px;
+
+}
+       .box{
+           width: 150px;
+height: 250px;
+background-color: red;
+cursor: pointer;
+}
+       button{
+           display: block;
+clear: both;
+width: 100px;
+height: 50px;
+margin:0 auto;
+}
+   </style>
+</head>
+<body>
+
+<div class="out">
+   <div class="box"></div>
+</div>
+<div class="out">
+   <div class="box"></div>
+</div>
+<div class="out">
+   <div class="box"></div>
+</div>
+<div class="out">
+   <div class="box"></div>
+</div>
+<div class="out">
+   <div class="box"></div>
+</div>
+
+   <button id=btn>重置</button>
+
+<script>
+var arr = ["iPhone","iPad","冰箱","空调","洗衣机","电视","电脑"]  //存放奖品的数组，也可以是图片的src
+var arr2 = ["100亿"]
+var flag = true;  //是否已经点击过
+$(".box").click(function () {
+
+if(!flag)return;  //点击过则return  ，否则继续执行
+
+var ran = Math.floor(Math.random()*arr.length);  //随机一个数组里的序号
+
+$(this).fadeOut("slow", function () {
+$(this).parent(".out").text(arr[ran]);
+flag=false;
+   })
+})
+$("#btn").click(function () {
+$("body").load("index.html")  //局部刷新，里面的链接用这个demo的名字就可以了
+})
+
+$(document).keyup(function (e) {
+if(e.keyCode==13){   //重置完了  抽奖之前按一下回车就作弊了 hhh  100亿
+arr=arr2
+}
+   })
+
+</script>
+</body>
+</html>
