@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
@@ -13,14 +13,12 @@
     <div class="box_margin">
         <div class="project " id="card1">
           <div class="mask">
-            
             <div class="front"></div>
             <div class="back"></div>
           </div>
         </div> 
         <div class="project " id="card2">
           <div class="mask">
-            
             <div class="front"></div>
             <div class="back"></div>
           </div>
@@ -31,6 +29,12 @@
             <div class="back"></div>
           </div>
         </div>
+        <div class="project " id="card4">
+          <div class="mask">
+            <div class="front"></div>
+            <div class="back"></div>
+          </div>
+        </div> 
         <button id="start">开始</button>
     </div>
 </div>
@@ -38,63 +42,88 @@
 <script type="text/javascript" src="../js/jquery.js"></script>
 <script type="text/javascript">
     $(function(){
+        var count = 1;
         $("#start").click(function(){
             $(".mask .back").css({'transform':' rotateY(180deg)'});
             $(".mask .front").css({'transform':'rotateY(0deg)'});
-            addMove();
+            if( count == 0){
+                alert('您已参加过该抽奖！！！')
+            }else{
+                count --;
+                addMove();
+            }
+            
         })
 
-       
-        var left1 = $("#card1").offset().left-451.5;
-        var left2 = $("#card2").offset().left-451.5;
-        var left3 = $("#card3").offset().left-451.5;
+        function addMove(){
 
-
-        var arr = [];
-        arr.push(left1,left2,left3)
-
-
-        var repeat = 6;
-        var time = setInterval(function(){
-            if(repeat == 0 ){
-                clearInterval(time)
-            }else{
-                repeat --;
-                sort();
-            }
-        },1000);
-
-        function sort(){
-            var crr = arr.concat()   //深复制数组准备工作
-            arr.sort(function(){
-                return (0.5-Math.random());
+            $('.project').each(function(index,item){
+                setTimeout(function(){
+                    $(item).addClass('ani_sou');
+                },index*100)
             })
 
-            var mergeArr = crr.map((item,index)=>{
-                if(item == arr[index]){
-                    return item
-                }
-
-                return 'A'
+            setTimeout(function(){
+                $('.project').each(function(index,item){
+                    $(item).removeClass('ani_sou');
             })
-
-            // if(~mergeArr.indexOf('A')){
-            //     console.log('没有找到A','11','没有A，就说明前后两个数组是重复的')
-            //     sort()
-            // }
-
-            mergeArr.indexOf('A') == -1 && sort()
+            },1500)
 
 
-             $('.project').each(function(index,item){
-                for(var i = 0 ; i < arr.length; i++){
-                     $('.project').eq(0).css({'position':'absolute', 'left':+ arr[0] +'px'})
-                     $('.project').eq(1).css({'position':'absolute', 'left':+ arr[1] +'px'})
-                     $('.project').eq(2).css({'position':'absolute', 'left':+ arr[2] +'px'})
+
+
+            var left1 = $("#card1").offset().left-351.5;
+            var left2 = $("#card2").offset().left-351.5;
+            var left3 = $("#card3").offset().left-351.5;
+            var left4 = $("#card4").offset().left-351.5;
+
+            var arr = [];
+            arr.push(left1,left2,left3,left4)
+
+            var repeat = 15;
+            var time = setInterval(function(){
+                if(repeat == 0 ){
+                    clearInterval(time)
+                }else{
+                    repeat --;
+                    sort();
                 }
-             })
-        }   
+            },600);
 
+            function sort(){
+                var crr = arr.concat()   //深复制数组准备工作
+                arr.sort(function(){
+                    return (0.5-Math.random());
+                })
+
+                console.log(crr);
+
+                var mergeArr = crr.map((item,index)=>{
+                    if(item == arr[index]){
+                        return item
+                    }
+
+                    return 'A'
+                })
+
+                // if(~mergeArr.indexOf('A')){
+                //     console.log('没有找到A','11','没有A，就说明前后两个数组是重复的')
+                //     sort()
+                // }
+
+                mergeArr.indexOf('A') == -1 && sort()
+
+
+                 $('.project').each(function(index,item){
+                    for(var i = 0 ; i < arr.length; i++){
+                         $('.project').eq(0).css({'position':'absolute', 'left':+ arr[0] +'px'})
+                         $('.project').eq(1).css({'position':'absolute', 'left':+ arr[1] +'px'})
+                         $('.project').eq(2).css({'position':'absolute', 'left':+ arr[2] +'px'})
+                         $('.project').eq(3).css({'position':'absolute', 'left':+ arr[3] +'px'})
+                    }
+                 })
+            }   
+        }
         /*   一个6种排列规则   */
         // A     B    C
         // 0     1    2
@@ -103,7 +132,18 @@
         // 1     2    0
         // 2     1    0
         // 2     0    1
-
+        var click_count = 1;
+        $(".box_margin .project").click(function(){
+            var index = $(this).index();
+            console.log(index)
+            if( click_count == 0){
+                alert('您已参加过该抽奖！！！')
+            }else{
+                click_count --;
+                $(".box_margin .project").eq(index).children().find('.back').css({'transform':' rotateY(0deg)'})
+                $(".box_margin .project").eq(index).children().find('.front').css({'transform':' rotateY(180deg)'})
+            }
+        })
  })
         
 </script>

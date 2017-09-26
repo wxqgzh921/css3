@@ -7,7 +7,7 @@
 	height:1100px;
 }
 .box_margin{
-	width:1000px;
+	width:1200px;
 	margin:0 auto;
 	height:1100px;
 	position: relative;
@@ -19,7 +19,7 @@
 #card1{
 	position: absolute;
 	left:0px;
-	top:200px;
+	top:400px;
 }
 .project .front {
 	height:311px;
@@ -37,13 +37,18 @@
 }
 #card2{
 	position: absolute;
-	top:200px;
-	left:415px;
+	top:400px;
+	left:320px;
 }
 #card3{
 	position: absolute;
-	top:200px;
-	left:800px;
+	top:400px;
+	left:640px;
+}
+#card4{
+    position: absolute;
+    top:400px;
+    left:960px;
 }
 .project, .project .back, .project .front{
     -webkit-transition: all 1s cubic-bezier(0.68,-.55,.265,1.55);
@@ -122,4 +127,10 @@
 }
 .project.ani2 {
      transform: translateX(-415px);
+}
+
+.ani_sou{
+    position: absolute!important;
+    top:200px!important;
+    left:500px!important;
 }
