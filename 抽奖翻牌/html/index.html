@@ -2,8 +2,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
-
+<!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+ -->
 <link rel="stylesheet" type="text/css" href="../css/index.css">
 
 </head>
@@ -36,27 +36,77 @@
           </div>
         </div> 
         <button id="start">开始</button>
+        <div id="info">
+        	<p>一共次抽奖机会</p>
+        	<p>一共抽中了G币</p>
+        	<p>还差可以再抽取一次</p>
+        </div>
     </div>
 </div>
 
 <script type="text/javascript" src="../js/jquery.js"></script>
 <script type="text/javascript">
     $(function(){
-        var count = 1;
         $("#start").click(function(){
-            if( count == 0){
-                alert('您已参加过该抽奖！！！')
+//          info.removehtml();
+            $(".result").remove();
+            loading();
+            if( info.chance == 0){
+                alert('您已参加过该抽奖！！！??????')
             }else{
-                count --;
+//              info.removehtml();
+//              info.addhtml();
                 $(".mask .back").css({'transform':' rotateY(180deg)'});
                 $(".mask .front").css({'transform':'rotateY(0deg)'});
                 addMove();
+                
             }
-            
         })
+    
+        
+        var info ={
+            chance : "",
+            G:"",
+            Once_again:""
+        }
+        //从后台数据获取到数据展示在页面上
+        info.addhtml = function (){
+            var html = '';
+            html += '<div id="info">';
+            html += '<p>共有' + info.chance +'次抽奖机会 </p>';
+            html += '<p>一共抽中了'+ info.G +'G币 </p>';
+            html += '<p>还差'+ info.Once_again +'就可以再抽一次</p>';
+            html += '</div>';
+            $(".box_margin").append(html);
+
+        }
+        //移除html
+        info.removehtml = function(){
+            $("#info").remove();
+        }
+        
+//      info.addhtml();
+        
+        //获取数据
+        function loading(){
+            $.ajax({
+                    url:"test.json",
+                    async:false,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success:function(result){
+                        info.chance = result.chance;
+                        info.G =  result.G;
+                        info.Once_again = result.Once_again;
+//                      info.addhtml();
+                    }
+            });
+        }
+        
+
 
         function addMove(){
-
+            
             $('.project').each(function(index,item){
                 setTimeout(function(){
                     $(item).addClass('ani_sou');
@@ -66,17 +116,17 @@
             setTimeout(function(){
                 $('.project').each(function(index,item){
                     $(item).removeClass('ani_sou');
-            })
+                })
             },1500)
-
-
-
 
             var left1 = $("#card1").offset().left-351.5;
             var left2 = $("#card2").offset().left-351.5;
             var left3 = $("#card3").offset().left-351.5;
             var left4 = $("#card4").offset().left-351.5;
-
+			
+			console.log($("#card1").offset().left);
+			console.log(left1);
+			
             var arr = [];
             arr.push(left1,left2,left3,left4)
 
@@ -96,9 +146,7 @@
                     return (0.5-Math.random());
                 })
 
-                console.log(crr);
-
-                var mergeArr = crr.map((item,index)=>{
+                var mergeArr = crr.map(function(item,index){
                     if(item == arr[index]){
                         return item
                     }
@@ -106,47 +154,53 @@
                     return 'A'
                 })
 
-                // if(~mergeArr.indexOf('A')){
-                //     console.log('没有找到A','11','没有A，就说明前后两个数组是重复的')
-                //     sort()
-                // }
-
                 mergeArr.indexOf('A') == -1 && sort()
 
 
-                 $('.project').each(function(index,item){
+                $('.project').each(function(index,item){
                     for(var i = 0 ; i < arr.length; i++){
                          $('.project').eq(0).css({'position':'absolute', 'left':+ arr[0] +'px'})
                          $('.project').eq(1).css({'position':'absolute', 'left':+ arr[1] +'px'})
                          $('.project').eq(2).css({'position':'absolute', 'left':+ arr[2] +'px'})
                          $('.project').eq(3).css({'position':'absolute', 'left':+ arr[3] +'px'})
                     }
-                 })
+                })
             }
-
-            var click_count = 1;
-            $(".box_margin .project").click(function(){
-                var index = $(this).index();
-                console.log(index)
-                if( click_count == 0){
-                    alert('您已参加过该抽奖！！！')
-                }else{
-                    click_count --;
-                    $(".box_margin .project").eq(index).children().find('.back').css({'transform':' rotateY(0deg)'})
-                    $(".box_margin .project").eq(index).children().find('.front').css({'transform':' rotateY(180deg)'})
-                }
-            })   
+        	
+        	var click_count = 1;
+        	var click_count2 = click_count;
+        	
+	        $(".box_margin .project").click(function(){
+	            var index = $(this).index();
+	            if( click_count == 0){
+	                alert('不能再翻牌了！！！')
+	                console.log(click_count);
+	            }else if(click_count2 !=0){
+	            	click_count2 -= click_count2 ;
+	                $(".box_margin .project").eq(index).children().find('.back').css({'transform':' rotateY(0deg)'})
+	                $(".box_margin .project").eq(index).children().find('.front').css({'transform':' rotateY(180deg)'})
+	                setTimeout(function(){
+	                    $.ajax({
+	                        url:"test.json",
+	                        async:false,
+	                        dataType: "json",
+	                        contentType: "application/json; charset=utf-8",
+	                        success:function(result){
+	                            $(".box_margin .project").eq(index).children().prepend(function(index){
+	                                return "<div class='result'>"+ result.probability+"</div>";
+	                            });
+	                            info.removehtml();
+	                            info.chance = result.chance ;
+	                            info.G = result.G  ;
+	                            info.Once_again =result.Once_again;
+	                            info.addhtml();
+	                        }
+	                    });
+	                },500)
+	            }
+	        }) 
         }
-        /*   一个6种排列规则   */
-        // A     B    C
-        // 0     1    2
-        // 0     2    1
-        // 1     0    2
-        // 1     2    0
-        // 2     1    0
-        // 2     0    1
-        
- })
+    })
         
 </script>
 
