@@ -13,26 +13,26 @@
     <div class="box_margin">
         <div class="project " id="card1">
           <div class="mask">
-            <div class="front"></div>
-            <div class="back"></div>
+            <div class="front"><img src="../images/project_front_bg.png"/></div>
+            <div class="back"><img src="../images/project_back_bg.png"/></div>
           </div>
         </div> 
         <div class="project " id="card2">
           <div class="mask">
-            <div class="front"></div>
-            <div class="back"></div>
+            <div class="front"><img src="../images/project_front_bg.png"/></div>
+            <div class="back"><img src="../images/project_back_bg.png"/></div>
           </div>
         </div>
         <div class="project " id="card3">
           <div class="mask">
-            <div class="front"></div>
-            <div class="back"></div>
+            <div class="front"><img src="../images/project_front_bg.png"/></div>
+            <div class="back"><img src="../images/project_back_bg.png"/></div>
           </div>
         </div>
         <div class="project " id="card4">
           <div class="mask">
-            <div class="front"></div>
-            <div class="back"></div>
+            <div class="front"><img src="../images/project_front_bg.png"/></div>
+            <div class="back"><img src="../images/project_back_bg.png"/></div>
           </div>
         </div> 
         <button id="start">开始</button>
@@ -119,12 +119,17 @@
                 })
             },1500)
 
-            var left1 = $("#card1").offset().left-351.5;
-            var left2 = $("#card2").offset().left-351.5;
-            var left3 = $("#card3").offset().left-351.5;
-            var left4 = $("#card4").offset().left-351.5;
+//          var left1 = $("#card1").offset().left-351.5;
+//          var left2 = $("#card2").offset().left-351.5;
+//          var left3 = $("#card3").offset().left-351.5;
+//          var left4 = $("#card4").offset().left-351.5;
+
+			var left1 = 0;
+            var left2 = 320;
+            var left3 = 640;
+            var left4 = 960;
 			
-			console.log($("#card1").offset().left);
+//			console.log($("#card1").offset().left);
 			console.log(left1);
 			
             var arr = [];
@@ -156,7 +161,8 @@
 
                 mergeArr.indexOf('A') == -1 && sort()
 
-
+				console.log(crr);
+				
                 $('.project').each(function(index,item){
                     for(var i = 0 ; i < arr.length; i++){
                          $('.project').eq(0).css({'position':'absolute', 'left':+ arr[0] +'px'})
@@ -171,7 +177,13 @@
         	var click_count2 = click_count;
         	
 	        $(".box_margin .project").click(function(){
+	        	
 	            var index = $(this).index();
+	            
+	            console.log($(".box_margin .project").eq(index).children().find(".back").html("<img src='../images/font11.jpg'>"));
+	            
+	            
+	            
 	            if( click_count == 0){
 	                alert('不能再翻牌了！！！')
 	                console.log(click_count);
@@ -179,24 +191,22 @@
 	            	click_count2 -= click_count2 ;
 	                $(".box_margin .project").eq(index).children().find('.back').css({'transform':' rotateY(0deg)'})
 	                $(".box_margin .project").eq(index).children().find('.front').css({'transform':' rotateY(180deg)'})
-	                setTimeout(function(){
-	                    $.ajax({
-	                        url:"test.json",
-	                        async:false,
-	                        dataType: "json",
-	                        contentType: "application/json; charset=utf-8",
-	                        success:function(result){
-	                            $(".box_margin .project").eq(index).children().prepend(function(index){
-	                                return "<div class='result'>"+ result.probability+"</div>";
-	                            });
-	                            info.removehtml();
-	                            info.chance = result.chance ;
-	                            info.G = result.G  ;
-	                            info.Once_again =result.Once_again;
-	                            info.addhtml();
-	                        }
-	                    });
-	                },500)
+//	                setTimeout(function(){
+//	                    $.ajax({
+//	                        url:"../test.txt",
+//	                        async:false,
+//	                       
+//	                        
+//	                        success:function(result){
+//	                            console.log($(".box_margin .project").eq(index).children().find("back").children().attr());
+//	                            info.removehtml();
+//	                            info.chance = result.chance ;
+//	                            info.G = result.G  ;
+//	                            info.Once_again =result.Once_again;
+//	                            info.addhtml();
+//	                        }
+//	                    });
+//	                },500)
 	            }
 	        }) 
         }
@@ -207,3 +217,10 @@
 
 </body>
 </html>
+
+
+
+ <!--var left1 = $("#card1").offset().left-($("#card1").offset().left-34);
+    var left2 = $("#card2").offset().left-($("#card1").offset().left-34);
+    var left3 = $("#card3").offset().left-($("#card1").offset().left-34);
+    var left4 = $("#card4").offset().left-($("#card1").offset().left-34);-->

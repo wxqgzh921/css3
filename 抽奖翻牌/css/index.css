@@ -23,14 +23,14 @@
 }
 .project .front {
 	height:311px;
-    background: url(../images/project_front_bg.png) no-repeat;
+    /*background: url(../images/project_front_bg.png) no-repeat;*/
     position: absolute;
     left:0;
     right:0;
 }
 .project .back {
 	height:311px;
-    background: url(../images/project_back_bg.png) no-repeat;
+    /*background: url(../images/project_back_bg.png) no-repeat;*/
     position: absolute;
     left:0;
     right:0;

@@ -1,0 +1,198 @@
+<html>
+<head>
+<title>手机号码抽奖</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script language="javascript">
+<!--
+var timer;
+var randnum;
+var cellnum =1;
+
+//定义一个存放手机号码的数组
+var mobile = new Array();
+mobile[0]=13111321311;
+mobile[1]=13220012432;
+mobile[2]=13320232102;
+mobile[3]=13420045433;
+mobile[4]=13354664104;
+mobile[5]=13576000105;
+mobile[6]=13087870106;
+mobile[7]=13546546107;
+mobile[8]=13460010768;
+mobile[9]=13067000009;
+mobile[10]=13043600110;
+mobile[11]=13056600111;
+mobile[12]=13020879812;
+mobile[13]=13898870123;
+mobile[14]=13989898114;
+mobile[15]=13808980115;
+mobile[16]=13687660116;
+mobile[17]=13576876117;
+mobile[18]=13457547018;
+mobile[19]=13345654619;
+mobile[20]=13868776120;
+mobile[21]=13678769121;
+mobile[22]=13346565522;
+mobile[23]=13687658723;
+mobile[24]=13568667124;
+mobile[25]=13658766125;
+mobile[26]=13645465126;
+mobile[27]=13547650127;
+mobile[28]=13654540128;
+mobile[29]=13658766829;
+mobile[30]=13234235130;
+mobile[31]=13576756731;
+mobile[32]=13567687132;
+mobile[33]=13234535433;
+mobile[34]=13657665754;
+mobile[35]=13645465135;
+mobile[36]=13436546136;
+mobile[37]=13234234337;
+mobile[38]=13769879738;
+mobile[39]=13698798739;
+mobile[40]=13020000140;
+mobile[41]=13879870041;
+mobile[42]=13020000142;
+mobile[43]=13078000143;
+mobile[44]=13565000144;
+mobile[45]=13457600145;
+mobile[46]=13020020146;
+mobile[47]=13046567890;
+mobile[48]=13020789986;
+mobile[49]=13809820146;
+
+//根据获得的随机数从而显示出随机的手机号码
+function getRandNum(){
+var num = mobile.length-1;//数组的"最大下标"是"数组长度减一"
+document.getElementById("result").value = mobile[GetRnd(0,num)];//调用"GetRnd"随机函数
+}
+
+//获得随机数
+function GetRnd(min,max){
+randnum = parseInt(Math.random()*(max-min+1));//其中"parseInt"是将随机数转换成整数
+return randnum;
+}
+
+//点击"开始"按钮->需调用的函数
+function setTimer(){
+timer = setInterval("getRandNum();",10);//过0.01秒就执行一次"getRandNum"函数,随机显示手机号码
+document.getElementById("start").disabled = true;//点击开始时->开始按钮变灰色
+document.getElementById("stop").disabled = false;//停止按钮可以使用
+}
+
+//点击"停止"按钮->需调用的函数
+function clearTimer(){
+noDupNum();//调用"noDupNum"函数,移除显示的手机号码
+clearInterval(timer);//取消赋值给"timer"间隔要执行的函数
+document.getElementById("start").disabled = false;//开始按钮可以使用
+document.getElementById("stop").disabled = true;//点击停止时->停止按钮变灰色
+}
+
+//移除那些出现过的手机号码
+function noDupNum(){
+mobile.removeEleAt(randnum);//点击"停止"按钮出现的号码给移除
+var o = 0;
+for(p=0; p<mobile.length;p++){
+if(typeof mobile[p]!="undefined"){//其中"typeof"是返回"mobile[p]"的类型,有"number","string","boolean" "object","function"和"undefined"这6种返回类型,用字符串来显示
+mobile[o] = mobile[p];
+o++;
+}
+}
+num = mobile.length-1;//移除一个号码时,其"数组长度减一"重新赋值给"数组下标"
+}
+Array.prototype.removeEleAt = function(dx){
+if(isNaN(dx)||dx>this.length){
+return false;
+}
+this.splice(dx,1);//其中"splice"是从dx开始一个一个移除
+}
+
+//将随机产生的手机号码显示到中奖区域
+function setValues(){
+document.getElementById(cellnum).value = document.getElementById("result").value ;
+cellnum++;//从1开始递增到50的文本框ID,这里是从"三等奖"开始显示
+}
+-->
+</script>
+
+</head>
+<body>
+<div align="center" ><span class="STYLE1">手机号码抽奖</span><br>
+<input name="text" type="text" id="result" size="15" readonly/><br>
+<input type="button" id="start" onClick="setTimer()" value="开始" />
+<input type="button" disabled id="stop" onClick="clearTimer();setValues();" value="停 止"/>
+</div><br>
+<div align="center"><strong><span class="STYLE1">一等奖</span></strong><10名></div>
+<table border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#F2F2F2">
+<tr>
+<td><input name="text36" type="text" id="36" size="15" readonly/></td>
+<td><input name="text37" type="text" id="37" size="15" readonly/></td>
+<td><input name="text38" type="text" id="38" size="15" readonly/></td>
+<td><input name="text39" type="text" id="39" size="15" readonly/></td>
+<td><input name="text40" type="text" id="40" size="15" readonly/></td>
+</tr>
+<tr>
+<td><input name="text41" type="text" id="41" size="15" readonly/></td>
+<td><input name="text42" type="text" id="42" size="15" readonly/></td>
+<td><input name="text43" type="text" id="43" size="15" readonly/></td>
+<td><input name="text44" type="text" id="44" size="15" readonly/></td>
+<td><input name="text45" type="text" id="45" size="15" readonly/></td>
+</tr>
+</table>
+<div align="center"><span class="STYLE1"><strong>二等奖</strong></span><15名></div>
+<table border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#F2F2F2">
+<tr>
+<td><input name="text21" type="text" id="21" size="15" readonly/></td>
+<td><input name="text22" type="text" id="22" size="15" readonly/></td>
+<td><input name="text23" type="text" id="23" size="15" readonly/></td>
+<td><input name="text24" type="text" id="24" size="15" readonly/></td>
+<td><input name="text25" type="text" id="25" size="15" readonly/></td>
+</tr>
+<tr>
+<td><input name="text26" type="text" id="26" size="15" readonly/></td>
+<td><input name="text27" type="text" id="27" size="15" readonly/></td>
+<td><input name="text28" type="text" id="28" size="15" readonly/></td>
+<td><input name="text29" type="text" id="29" size="15" readonly/></td>
+<td><input name="text30" type="text" id="30" size="15" readonly/></td>
+</tr>
+<tr>
+     <td><input name="text31" type="text" id="31" size="15" readonly/></td>
+     <td><input name="text32" type="text" id="32" size="15" readonly/></td>
+<td><input name="text33" type="text" id="33" size="15" readonly/></td>
+<td><input name="text34" type="text" id="34" size="15" readonly/></td>
+<td><input name="text35" type="text" id="35" size="15" readonly/></td>
+</tr>
+</table>
+<div align="center"><span class="STYLE1"><strong>三等奖</strong></span><20名></div>
+<table border="1" align="center" cellpadding="0" cellspacing="0" bordercolor="#F2F2F2">
+<tr>
+<td><input name="text1" type="text" id="1" size="15" readonly/></td>
+<td><input name="text2" type="text" id="2" size="15" readonly/></td>
+<td><input name="text3" type="text" id="3" size="15" readonly/></td>
+<td><input name="text4" type="text" id="4" size="15" readonly/></td>
+<td><input name="text5" type="text" id="5" size="15" readonly/></td>
+</tr>
+<tr>
+<td><input name="text6" type="text" id="6" size="15" readonly/></td>
+<td><input name="text7" type="text" id="7" size="15" readonly/></td>
+<td><input name="text8" type="text" id="8" size="15" readonly/></td>
+<td><input name="text9" type="text" id="9" size="15" readonly/></td>
+<td><input name="text10" type="text" id="10" size="15" readonly/></td>
+</tr>
+<tr>
+<td><input name="text11" type="text" id="11" size="15" readonly/></td>
+<td><input name="text12" type="text" id="12" size="15" readonly/></td>
+<td><input name="text13" type="text" id="13" size="15" readonly/></td>
+<td><input name="text14" type="text" id="14" size="15" readonly/></td>
+<td><input name="text15" type="text" id="15" size="15" readonly/></td>
+</tr>
+<tr>
+<td><input name="text16" type="text" id="16" size="15" readonly/></td>
+<td><input name="text17" type="text" id="17" size="15" readonly/></td>
+<td><input name="text18" type="text" id="18" size="15" readonly/></td>
+<td><input name="text19" type="text" id="19" size="15" readonly/></td>
+<td><input name="text20" type="text" id="20" size="15" readonly/></td>
+</tr>
+</table>
+</body>
+</html>
