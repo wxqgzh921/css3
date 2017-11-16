@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>抽奖</title>
+		<link href="css/luck.css" rel="stylesheet"/>
+		<script src="js/jquery.js"></script>
+	
+	</head>
+	<body>
+		<div class="box">
+			<div class="phone">
+				<div class="phone_margin">
+					<div class="one"><img src="luck_img/1.png" class="imgsize"></div>
+					<div class="two"><img src="luck_img/2.png" class="imgsize"></div>
+					<div class="three"><img src="luck_img/3.png" class="imgsize"></div>
+					<div class="four"><img src="luck_img/4.png" class="imgsize"></div>
+					<div class="five"><img src="luck_img/5.png" class="imgsize"></div>
+					<div class="six"><img src="luck_img/6.png" class="imgsize"></div>
+					<div class="seven"><img src="luck_img/7.png" class="imgsize"></div>
+					<div class="eight"><img src="luck_img/8.png" class="imgsize"></div>
+					<div class="nine"><img src="luck_img/9.png" class="imgsize"></div>
+					<div class="ten"><img src="luck_img/0.png" class="imgsize"></div>
+					<div class="x"><img src="luck_img/x.png" class="imgsize"></div>
+					<div id="start"></div>
+				</div>
+			</div>
+			<div class="show">
+				<div id="display"></div>
+				<div class="show_phone">
+					<div id="1"></div>
+					<div id="2"></div>
+					<div id="3"></div>
+					<div id="4" class="show_four"></div>
+					<div id="5"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+	$(function(){
+		var timer;
+		var lucknum = 1;
+		
+		var mobile;
+		var mobileArr;
+		function getAllMobile(){
+			$.ajax({
+	        	url:"api/getPoll.php?cat=migu_hubei",
+	  			type:"GET",
+	            async:false,
+	            dataType: "json",
+	            contentType: "application/json; charset=utf-8",
+	            success:function(result){
+	            	mobile = result;
+	            }
+	     	});
+	     	//定义一个存放手机号码的数组
+	     	mobileArr = [];
+	        for (var item in mobile){
+				mobileArr.push({key:item,value:mobile[item]})
+			}
+		}
+		getAllMobile();
+		
+        //定义一个存放数字对应class
+        var numobj = {
+        	0: 'one',
+			1: 'two',
+			2: 'three',
+			3: 'four',
+			4: 'five',
+			5: 'six',
+			6: 'seven',
+			7: 'eight',
+			8: 'nine',
+			9: 'ten',
+			10: 'x'
+        }
+     	//根据获得的随机数从而显示出随机的手机号码
+     	function getRandNum(){
+     		var num = mobileArr.length-1;
+			var phone = mobileArr[GenRand(0,num)].value + '';
+			$("#display").html(phone);
+			var everyPhoneNum = phone.split('');
+			for(var i = 0; i<everyPhoneNum.length; i++){
+				$('.'+ numobj[i] +' .imgsize').attr('src','luck_img/'+everyPhoneNum[i]+'.png')
+				$('.'+ numobj[3] +' .imgsize').attr('src','luck_img/x.png')
+				$('.'+ numobj[4] +' .imgsize').attr('src','luck_img/x.png')
+				$('.'+ numobj[5] +' .imgsize').attr('src','luck_img/x.png')
+				$('.'+ numobj[6] +' .imgsize').attr('src','luck_img/x.png')
+			}
+     	}
+     	function GenRand(min,max){
+     		return  parseInt(Math.random()*(max-min+1));
+     	}
+		//抽奖
+		function action(){
+     		if(lucknum > 5){
+     			alert("这一轮的抽奖结束！！！")
+     		}else{
+     			if($("#start").is(".backimg")){
+	     			$("#start").removeClass("backimg");
+	     			clearInterval(timer);
+	     			getLuckNum();
+	   				returnLuckNum();
+	     		}else{
+	     			getAllMobile();
+	     			$("#start").addClass("backimg");
+	   				timer = setInterval(getRandNum,10);
+	     		}
+     		}
+		}
+		//点击开始摇奖||结束摇奖
+     	$("#start").click(function(){
+     		action();
+     	})
+		//按键盘"S"键触发抽奖
+		$(document).keydown(function(event){
+			if(event.keyCode == 83){
+				action();
+			}
+     	})
+     	function getLuckNum(){
+     		$('#'+ lucknum +'').html($("#display").html().replace(/(\d{3})\d{4}(\d{4})/, '$1XXXX$2'))
+     		lucknum++;
+     	}
+     	function returnLuckNum(){
+     		$.ajax({
+     			type:"post",
+     			url:"api/setWin.php?cat=migu_hubei&phones="+ $("#display").html() +"",
+     			async:true,
+     			success:function(){
+     				
+     			}
+     		});
+     	}
+	})
+	
+	</script>
+</html>
