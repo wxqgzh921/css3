@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+
+    <link rel="stylesheet" type="text/css" href="css/css.css">
+</head>
+
+<body>
+<div class="box">
+	<div class="box_margin">
+	    <div class="project " id="card1">
+	        <div class="mask">
+	            <div class="back"><img src="imgs/egg_1.png"></div>
+	            <div class="fanzt-chuizi"><img src="imgs/cz_1.jpg"></div>
+		        <div class="fanzt-hua"><img src="imgs/img-4.png"></div>
+		        <div class="fanzt-message"><b>中奖了</b></div>
+	        </div>
+	    </div>
+	    <div class="project " id="card2">
+	        <div class="mask">
+	            <div class="back"><img src="imgs/egg_1.png"></div>
+	        </div>
+	    </div>
+	    <div class="project " id="card3">
+	        <div class="mask">
+	            <div class="back"><img src="imgs/egg_1.png"></div>
+	        </div>
+	    </div>
+	    <div class="project " id="card4">
+	        <div class="mask">
+	            <div class="back"><img src="imgs/egg_1.png"></div>
+	        </div>
+	    </div>
+	    <div id="start" style="float:left;"><p>点击开始</p><img src="imgs/jt.png"></div>
+    </div>
+</div>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+    $(function(){
+    	$(".project").mouseover(function(e){
+    		this.style.cursor = 'url(imgs/cz_1.jpg),auto';
+    		console.log(e.pageY)
+    	})
+	
+        $("#start").click(function(){
+                addMove();
+       })
+       
+        function addMove(){
+        	
+			var left1 = 34;
+		    var left2 = 273;
+		    var left3 = 512;
+		    var left4 = 751;
+		    
+            var arr = [];
+            arr.push(left1,left2,left3,left4)
+
+            var repeat = 15;
+            var time = setInterval(function(){
+                if(repeat == 0 ){
+                    clearInterval(time)
+                }else{
+                    repeat --;
+                    sort();
+                }
+            },600);
+
+            function sort(){
+                var crr = arr.concat()   //深复制数组准备工作
+                arr.sort(function(){
+                    return (0.5-Math.random());
+                })
+
+                var mergeArr = crr.map(function(item,index){
+                    if(item == arr[index]){
+                        return item
+                    }
+
+                    return 'A'
+                })
+
+                mergeArr.indexOf('A') == -1 && sort()
+
+				
+                $('.project').each(function(index,item){
+                    for(var i = 0 ; i < arr.length; i++){
+                         $('.project').eq(0).css({'position':'absolute', 'left':+ arr[0] +'px'})
+                         $('.project').eq(1).css({'position':'absolute', 'left':+ arr[1] +'px'})
+                         $('.project').eq(2).css({'position':'absolute', 'left':+ arr[2] +'px'})
+                         $('.project').eq(3).css({'position':'absolute', 'left':+ arr[3] +'px'})
+                    }
+                })
+            }
+            
+        	var click_count = 1;
+      		var click_count2 = click_count;
+        	
+        	
+	        $(".box_margin .project").click(function(){
+	            var index = $(this).index();
+	            console.log(index)
+	            if( click_count2 == 0){
+		              alert('蛋碎了一地！')
+		        }else if(click_count2 !=0){
+					click_count2 --;
+	            	$(".project").mouseover(function(e){
+			    		this.style.cursor = 'pointer';
+			    	})
+	
+	            	
+			    	
+	            }
+	        }) 
+        }
+    })
+        
+</script>
+
+</body>
+</html>
+
+
+
+
+ 					<!--$(".fanzt-chuizi").show();
+                        var ctop=$(".fanzt-chuizi").position().top-20;
+                        var cleft=$(".fanzt-chuizi").position().left+30;
+                        //1.锤子抬起的动作
+                        $(".fanzt-chuizi").animate({"top":ctop+"px","left":cleft+"px"},1500,function(){
+                            //2.锤子抬起达到最顶点的动作
+                            $(".fanzt-chuizi").css(
+                                {
+                                        "-webkit-transform":"rotate(80deg)",
+                                        "-moz-transform":"rotate(80deg)",
+                                        "-o-transform":"rotate(80deg)",
+                                        "transform":"rotate(80deg)",
+                                        "-webkit-transition":"all 0.8s ease",
+                                        "-moz-transition":"all 0.8s ease",
+                                        "-o-transition":"all 0.8s ease",
+                                        "transition":"all 0.8s ease"
+                                });
+                            //3.锤子落下的动作
+                            $(".fanzt-chuizi").animate({"top":(ctop+25)+"px","left":(cleft-50)+"px"},200,function(){
+                                //4.锤子落下到达最低点
+                                $(".fanzt-chuizi").css(
+                                    {
+                                        "-webkit-transform":"rotate(5deg)",
+                                        "-moz-transform":"rotate(5deg)",
+                                        "-o-transform":"rotate(5deg)",
+                                        "transform":"rotate(5deg)",
+                                        "-webkit-transition":"all 0.1s ease",
+                                        "-moz-transition":"all 0.1s ease",
+                                        "-o-transition":"all 0.1s ease",
+                                        "transition":"all 0.1s ease"
+                                    });
+                                //5.金蛋破碎
+                                $("#egg").attr("src","images/egg_2.png");
+                                $(".fanzt-chuizi").hide();
+                                //6.金花溅出
+                                $(".fanzt-hua").slideDown(200);
+                                //7.中奖结果
+                                $(".fanzt-message").show(200);
+                                $(".fanzt-message").find("b").text(data);-->
