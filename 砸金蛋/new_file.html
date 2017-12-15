@@ -24,7 +24,7 @@
 
 <body>
 	<div class="fanzt-egg">
-    	<div class="fanzt-egg-img" data-flag="0" onClick="eggClick(this)">
+    	<div class="fanzt-egg-img" data-flag="0">
         	<img src="imgs/egg_1.png" id="egg">
         </div>
         <div class="fanzt-chuizi"><img src="imgs/cz_1.jpg"></div>
@@ -35,6 +35,7 @@
 		$('.fanzt-egg-img').click(function(){
 			$(".fanzt-chuizi").show();
 			var ctop=$(".fanzt-chuizi").position().top-20;
+			console.log(ctop);
 			var cleft=$(".fanzt-chuizi").position().left+30;
 			//1.锤子抬起的动作
 			$(".fanzt-chuizi").animate({"top":ctop+"px","left":cleft+"px"},500,function(){
