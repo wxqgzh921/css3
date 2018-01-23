@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8"/>
+<title>开门大吉，砸蛋取金</title>
+<? $path = '/style/css/events/2017/1708/'; ?>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+
+    <link rel="stylesheet" type="text/css" href="<?= $path ?>index.css">
+</head>
+
+<body>
+<div class="box">
+  <div class="box_margin">
+    <div class="project " id="one">
+        <div class="egg"><img src="<?= $path ?>egg.png" class="eggimg"></div>
+        <div class="chuizi"><img src="<?= $path ?>chuizi.png"></div>
+        <div class="hua"><img src="<?= $path ?>hua.png"></div>
+        <div class="message"><img src="<?= $path ?>6.png"></div>
+    </div>
+    <div class="project " id="two">
+        <div class="egg"><img src="<?= $path ?>egg.png" class="eggimg"></div>
+        <div class="chuizi"><img src="<?= $path ?>chuizi.png"></div>
+        <div class="hua"><img src="<?= $path ?>hua.png"></div>
+        <div class="message"><img src="<?= $path ?>40.png"></div>
+    </div>
+    <div class="project " id="three">
+        <div class="egg"><img src="<?= $path ?>egg.png" class="eggimg"></div>
+        <div class="chuizi"><img src="<?= $path ?>chuizi.png"></div>
+        <div class="hua"><img src="<?= $path ?>hua.png"></div>
+        <div class="message"><img src="<?= $path ?>6.png"></div>
+    </div>
+    <div id="start"><img  src="<?= $path ?>start.png"></div>
+    <div id="info">
+	<p>一共<i class="red"><?php echo $chance;?></i>个木槌; 一共抽中了<i class="red"><?php echo $G;?></i>G币; 还差<i class="red"><?php echo $Once_again;?></i>可以再抽取一次</p>
+    </div>
+    <div class="tj">共获得：<i class="red"><?php echo $G;?></i>G币</div>
+    <div class="rule_z">
+	<div class="rule">
+		<p class="small" style="margin-top:20px;">2018今年要发，不经意间去年已从我们手中逃走，新的一年又“自投罗网”的来到我们身边。各位玩家老爷们，去年的计划是否已都一一实现，没有实现也不要紧，反正新年计划可以洗洗再用的。而我们游戏大厅的计划，就是在今年争取推出更多有趣的活动，反馈给各位玩家老爷。</p>
+                  <p class="small">开年活动第一幕，参与活动获取木槌砸金蛋，单次返利高达40%。这么一想活动就像生活一样，努力奋斗为了什么，为了个锤子。</p>
+		<p class="small" style="margin-bottom:28px;">1、活动期间内，在任意一款平台页游中累积充值<i class="red">100RMB</i>（G币充入游戏无效），便可获取一个木槌砸碎金蛋；</p>
+		<p class="small" style="margin-bottom:28px;">2、金蛋最高奖励为<i class="red">40%返利</i>，未砸中则获取6G币奖励；</p>
+		<p class="small"  style="margin-bottom:28px;">3、活动参与次数不限，G币获取总数可在页面右下方查看，奖励将在活动结束后的一周内发放；</p>
+		<p class="small">4、若活动页面无法响应，请更新浏览器，或更改浏览器模式（兼容/极速）。</p>
+		<i class="last">(活动页面右下角可查看累积获取的G币总额)</i>
+
+          </div>
+     </div>
+     <div class="erweima">
+	<img src="<?= $path ?>erweima.jpg" style="margin-top:30px;"/>	
+	<p style="color:#d6af05;margin-top:10px;letter-spacing:6px;">手机扫描二维码</p>	
+	<p style="color:#d6af05;margin-top:10px;letter-spacing:1px;">可直接访问游戏风云</p>	
+      </div>
+      <div class="footer">
+	<p>All Rights Reserved. 上海游戏风云文化传媒有限公司 版权所有 沪ICP备06061673号</p>
+	<p>网络文化经营许可证：文网文【2010】0387-014号 广播电视节目制作经营许可证：（沪）字第177号 增值电信业务经营许可证：沪B2-20110001</p>
+	<p>Powered by gamefy.cn</p>
+      </div>
+      <div class="islogin">
+	<p class="red"></p>
+      </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="<?= $path ?>jquery.js"></script>
+<script type="text/javascript">
+
+$(function(){
+	$(".project").mouseover(function(e){
+    		this.style.cursor = 'url(<?= $path ?>chuizi.png),auto';
+    	})
+	isLogin();
+  	
+  	var info ={
+     		chance : "",
+      		G:"",
+      		Once_again:""
+  	}
+	//从后台数据获取到数据展示在页面上
+	info.addhtml = function (){
+	    var html = '';
+	    html += '<div id="info">';
+	    html += '<p>一共<i class="red">' + info.chance +'</i>个木槌; 一共抽中了<i class="red">'+ info.G +'</i>G币; 还差<i class="red">'+ info.Once_again +'</i>就可以再抽一次 </p>';
+	    html += '</div>';
+	    html += '<div class="tj">共获得：'+ info.G +'G币</div>'
+	    $(".box_margin").append(html);
+	}
+	//移除html
+	info.removehtml = function(){
+	    $("#info").remove();
+	}
+
+	// 设置触发翻牌效果触发点
+	var click_count;
+	$("#start").click(function(){ click_count =1 ;startroll() })
+	
+	function startroll () {
+		isLogin();
+		if( $(".islogin p").text()!= "您当前未登录！" && $(".islogin p").text()!= "活动未开始！" && $(".islogin p").text()!= "活动已结束！" ){
+			$(".result").remove();
+			loading()
+			if( info.chance == 0){
+				alert('您还不能砸蛋！')
+			}else{
+				$('.box_margin .project').find('.eggimg').attr('src','<?= $path ?>egg.png');
+				$('.box_margin .project').find('.eggimg').show();
+				$('.box_margin .project').find('.chuizi').hide();
+				$('.box_margin .project').find('.hua').hide();
+				$(".message").removeClass("message_show");
+				$(".message").css("display","block");
+        				$(".message").addClass("message_run message_p");
+				
+				addMove();	
+										
+				
+			}
+		}else if( $(".islogin p").text()== "活动未开始！"){
+			console.log( $(".islogin p").text());
+		}
+	}
+
+	//用户是否登录
+	function isLogin(){
+		$.ajax({
+			url:"/events/event2018year/getStatus ",
+			async:false,
+			type:"GET",
+			dataType: "json",
+			contentType: "application/json; charset=utf-8",
+			success:function(res){
+				if(res.status  == -3){
+					$(".islogin p").text('您当前未登录！');
+					alert("您当前未登录！");
+					window.location.href = "/register?preurl=events/events2017/event_1707";
+					return ;
+				}else if(res.status  == -1){
+					$(".islogin p").text('活动未开始！');
+					alert("活动未开始！！");
+					return;
+				}else if(res.status  == -2){
+					$(".islogin p").text('活动已结束！')
+					alert("活动已结束！！")
+				}
+			}
+		});
+	}
+
+  //获取数据
+  function loading(){
+      $.ajax({
+          url:"/events/event2018year/getUserInfo",
+   type:"GET",
+          async:false,
+          dataType: "json",
+          contentType: "application/json; charset=utf-8",
+          success:function(result){
+              info.chance = result.chance;
+              info.G =  result.G;
+              info.Once_again = result.Once_again;
+          }
+      });
+  }
+
+  function addMove(){
+    
+    var left1 = 136;
+    var left2 = 443.5;
+    var left3 = 751;
+
+    var arr = [];
+    arr.push(left1,left2,left3)
+
+    var repeat = 6;
+    var time = setInterval(function(){
+        if(repeat == 0 ){
+            clearInterval(time)
+        }else{
+            repeat --;
+            sort();
+        }
+    },800);
+
+    function sort(){
+        var crr = arr.concat()   //深复制数组准备工作
+        arr.sort(function(){
+            return (0.5-Math.random());
+        })
+
+        var mergeArr = crr.map(function(item,index){
+            if(item == arr[index]){
+                return item
+            }
+            return 'A'
+        })
+
+        mergeArr.indexOf('A') == -1 && sort()
+
+        $('.project').each(function(index,item){
+            for(var i = 0 ; i < arr.length; i++){
+                $('.project').eq(0).css({'position':'absolute', 'left':+ arr[0] +'px'})
+                $('.project').eq(1).css({'position':'absolute', 'left':+ arr[1] +'px'})
+                $('.project').eq(2).css({'position':'absolute', 'left':+ arr[2] +'px'})
+            }
+        })
+      }
+           
+  }
+  //提示点击开始砸蛋
+  function isClickStart(){
+        	alert('请点击开始进行游戏')
+  }
+
+  function clickEgg(index){
+	if( click_count == 0){
+              	alert('一次只能砸一个金蛋哟！')
+          }else{
+		click_count -- ;
+              	$('.box_margin .project').css('cursor','pointer');
+	     	$('.box_margin .project').eq(index).find('.chuizi').show();
+		var ctop = $('.box_margin .project').eq(index).find('.chuizi').top - 20;
+	         var cleft = $('.box_margin .project').eq(index).find('.chuizi').left + 30;
+		
+		$('.box_margin .project').eq(index).find('.chuizi').animate({'top':ctop+'px','left':cleft+'px'},500,function(){
+	            		
+	            		$('.box_margin .project').eq(index).find('.chuizi').css(
+							{
+									"-webkit-transform":"rotate(80deg)",
+									"-moz-transform":"rotate(80deg)",
+									"-o-transform":"rotate(80deg)",
+									"transform":"rotate(80deg)",
+									"-webkit-transition":"all 0.8s ease",
+									"-moz-transition":"all 0.8s ease",
+									"-o-transition":"all 0.8s ease",
+									"transition":"all 0.8s ease"
+							});
+	            		
+	            		$('.box_margin .project').eq(index).find('.chuizi').animate({'top':(ctop+25)+'px','left':(cleft-50)+'px'},200,function(){
+	            			$('.box_margin .project').eq(index).find('.chuizi').css(
+								{
+									"-webkit-transform":"rotate(5deg)",
+									"-moz-transform":"rotate(5deg)",
+									"-o-transform":"rotate(5deg)",
+									"transform":"rotate(5deg)",
+									"-webkit-transition":"all 0.1s ease",
+									"-moz-transition":"all 0.1s ease",
+									"-o-transition":"all 0.1s ease",
+									"transition":"all 0.1s ease"
+								});
+		            			
+	            			
+						$('.box_margin .project').eq(index).find('.eggimg').attr('src','<?= $path ?>broken-egg.png');
+					
+					setTimeout(function(){
+						$('.box_margin .project').eq(index).find('.eggimg').hide();
+	            				$('.box_margin .project').eq(index).find('.chuizi').hide();
+	            				$('.box_margin .project').eq(index).find('.hua').slideDown(200);
+						$('.box_margin .project').eq(index).find('.message').show(200);
+						$('.box_margin .project').eq(index).find('.message').addClass("message_show");
+	            			},350);
+	            			
+	            		})
+	            	})
+         }
+	return true;
+     }
+	//开始抽奖
+     $(".box_margin .project").click(function(){
+          var index = $(this).index();
+	 alert(click_count) //这个地方初始化值为undefined
+	 click_count !== undefined && clickEgg(index) || isClickStart()
+          	
+         $(".message").css("display","none");
+        	$(".message").removeClass("message_run message_p");
+	var src = $('.box_margin .project').eq(index).find('.message').children().attr("src");
+	console.log(src);
+	var  src_num =parseInt(src.substring(28,30));
+	console.log(src_num);
+	
+
+      })
+})
+
+</script>
+
+
+</body>
+</html>

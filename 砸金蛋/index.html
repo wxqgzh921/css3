@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
 
-    <link rel="stylesheet" type="text/css" href="css/css.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 
 <body>
@@ -21,27 +21,38 @@
             <div class="chuizi"><img src="imgs/cz_1.jpg"></div>
 	        <div class="hua"><img src="imgs/img-4.png"></div>
 	        <div class="message"><b>中奖了</b></div>
+	        
 	    </div>
 	    <div class="project " id="three">
 	       	<div class="egg"><img src="imgs/egg_1.png" class="eggimg"></div>
             <div class="chuizi"><img src="imgs/cz_1.jpg"></div>
 	        <div class="hua"><img src="imgs/img-4.png"></div>
 	        <div class="message"><b>中奖了</b></div>
+	       
 	    </div>
+	    <div class="mask"></div>
 	    <div id="start" style="float:left;"><p>点击开始</p><img src="imgs/jt.png"></div>
     </div>
 </div>
 
-<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
     $(function(){
     	$(".project").mouseover(function(e){
     		this.style.cursor = 'url(imgs/cz_1.jpg),auto';
     	})
+    	//	DIANJ点击开始
+    	var click_count;
         $("#start").click(function(){
+        		$(".mask").css("display","block");
+        		//转
+        		click_count = 1
+        		
                 addMove();
        })
        
+        
+        
         function addMove(){
         	
 			var left1 = 34;
@@ -50,7 +61,6 @@
 		    
             var arr = [];
             arr.push(left1,left2,left3)
-
             var repeat = 5;
             var time = setInterval(function(){
                 if(repeat == 0 ){
@@ -59,24 +69,21 @@
                     repeat --;
                     sort();
                 }
+                
             },800);
-
+            setTimeout(function(){$(".mask").css("display","none");},4000);
             function sort(){
                 var crr = arr.concat()   //深复制数组准备工作
                 arr.sort(function(){
                     return (0.5-Math.random());
                 })
-
                 var mergeArr = crr.map(function(item,index){
                     if(item == arr[index]){
                         return item
                     }
-
                     return 'A'
                 })
-
                 mergeArr.indexOf('A') == -1 && sort()
-
 				
                 $('.project').each(function(index,item){
                     for(var i = 0 ; i < arr.length; i++){
@@ -87,17 +94,22 @@
                 })
             }
             
-        	var click_count = 1;
-      		var click_count2 = click_count;
         	
+      	
         	
-	        $(".box_margin .project").click(function(){
-	            var index = $(this).index();
-	            console.log(index)
-	            if( click_count2 == 0){
+
+        }
+        
+        function isClickStart(){
+        	alert('请点击开始进行游戏')
+        }
+        
+        function clickEgg(index){
+        		
+        		if( click_count == 0){
 		              alert('蛋碎了一地！')
-		        }else if(click_count2 !=0){
-					click_count2 --;
+		        }else{
+					click_count -= 1;
 					$('.box_margin .project').css('cursor','pointer');
 	            
 	        
@@ -141,11 +153,28 @@
 	            			$('.box_margin .project').eq(index).find('.hua').slideDown(200);
 	            			
 	            			$('.box_margin .project').eq(index).find('.message').show(200);
+	            			
 	            		})
 	            	})
 	            }
-	        }) 
+		        return true;
         }
+        
+        $(".box_margin .project").click(function(){
+	        	
+	            var index = $(this).index();
+	            alert(click_count)
+				//click_count !== undefined && clickEgg(index) || isClickStart()
+				
+				 if(click_count !== undefined && click_count != 0 ){
+				 	
+					clickEgg(index)		
+					
+				 }else{
+					isClickStart()
+				  }
+
+	        })
     })
         
 </script>
