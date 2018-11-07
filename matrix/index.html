@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>matrix</title>
+	<style type="text/css">
+		.box{
+			width:100px;
+			height: 100px;
+			position: relative;
+			background: #00c487;
+			/*transform: translate(10px,20px) rotate(30deg) scale(1.5,2);*/
+			transform: matrix(0.75,0.8,-0.8,1.2,10,20);
+		}
+		.point{
+			width:5px;
+			height: 5px;
+			background:red;
+			position: absolute;
+			top:40px;
+			right:20px;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<div class="point"></div>
+	</div>
+</body>
+</html>
+
+
+<!-- css3中使用transform可以对元素进行变换，其中包含：位移，旋转，偏移，缩放。 transform 可以使用translate/rotate/skew/scale 的方式来控制元素变换，也可以使用matrix 的方式来控制元素变换。 -->
+
+<!-- matrix(a,b,c,d,e,f); -->
+<!-- 
+［ａ　ｃ　ｅ　
+　ｂ　ｄ　ｆ
+　０　０　１］
+2D的转换是由一个 3*3 的矩阵表示的，前两行代表转换的值，分别是abcdef,要注意是竖着排的， 第一行代表x轴发生的变化，第二行代表y轴发生的变化，第三行代表z轴发生的变化， 这里是2d 不涉及z轴，所以是001 -->
+
+<!-- 缩放scale（x,y） 缩放对应的是a,d x轴的缩放比例对应a, y轴的缩放比例对应d.
+transform:scale(x,y)  a=x d=y  
+scale (1.5,2)
+[ 1.5  x  x
+  x    2  x
+  0    0  1 ]   
+matrix(1.5,-,-,2,-,-);
+如果一个没有元素没有被缩放，默认a,d =1  -->
+
+<!-- 平移translate(x,y) 平移对应的是矩阵中的e,f 即x=e,y=f
+translate（10，20）
+[ x x 10 
+  x x 20
+  0 0  1 ]
+matrix(-,-,-,-,10,20) -->
+
+<!-- 旋转rotate(θdeg) 
+transform:rotate(θdeg)
+a = cosθ
+b = sinθ
+c = -sinθ
+d = cosθ
+
+计算30°的sin值
+弧度和角度的转换公式：弧度=π/180×角度
+const radian = Math.PI / 180 * 30  算出弧度
+const sin = Math.sin(radian)  计算sinθ
+const cos = Math.cos(radian)  计算cosθ
+
+console.log(sin,cos)  //sin ~ 0.5  cos ~ 0.866
+ transform:rotate(30deg) （不考虑缩放和偏移，只旋转30°）
+ a = 0.866
+ b = 0.5 
+ c = -0.5
+ d = 0.866
+ transform:matrix(0.866,0.5,-0.5,0.866,0,0)
+ [ 0.866  -0.5   0
+   0.5    0.866  0
+   0      0      1 ] -->
+
+<!-- 偏移 skew(x,y) 偏移对应矩阵中的c,b
+即x=c,y=b 这个并不是相等的，需对x,y的值进行tan运算。
+transfrom:skew(20deg,30deg);
+c = tan20°
+b = tan30°
+
+创建一个方法，直接返回角度的tan值
+function tan(deg){
+	const radian = Math.PI / 180 * deg
+	return Math.tan(radian)
+}
+const b = tan(30)   ~ 0.577
+const c = tan(20)   ~ 0.364
+
+transform : matrix(x,0.577,0.364,x,x,x) -->
+
+旋转+缩放+偏移+位移 
+
+如果我们既要旋转又要缩放又要偏移，我们需将旋转和缩放和偏移和位移多个矩阵相乘，要按照transform里的rotate/scale/skew/translate所写的顺序相乘 
+
+[ a  c  e        [ A  C  E           [ aA+cB+eG  aC+cD+eH  aE+cF+eI
+  b  d  f    *     B  D  F      =      bA+dB+fG  bC+dD+fH  bE+dF+fI
+  g  h  i ]        G  H  I ]           gA+hB+iG  gC+hD+iH  gE+hF+iI ]
+
+⑴. transform :rotate(30) scale(1.5,2);
+
+matrix(0.866,0.5,-0.5,0.866,0,0)  matrix(1.5,0,0,2,0,0)
+
+
+[ 0.866  -0.5   0            [ 1.5  0   0           [ 0.866*1.5+(-0.5*0)+0*0   0.866*0+(-0.5*2)+0*0   0.866*0+(-0.5*0)+0*1         [ 1.299  -1     0 
+  0.5    0.866  0      *       0    2   0      =      0.5*1.5+0.866*0+0*0      0.5*0+0.866*2+0*0      0.5*0+0.866*0+0*1        =     0.75   1.732  0
+  0      0      1 ]            0    0   1 ]           0*1.5+0*0+1*0            0*0+0*2+1*0            0*0+0*0+1*1          ]         0      0      1 ]
+
+transform :rotate(30) scale(1.5,2)   ==>   transform:matrix(1.299,0.75,-1,1.732,0,0)
+
+⑶⑷⑸⑹⑺⑻⑼
+
+⑵. transform:translate(10px,20px) rotate(37deg) scale(1.5,2)
+translate(10px,20px)  e=10  f=20
+roate(37deg)  a=cos37=0.8  b=sin37=0.6   c=-sin37=-0.6   d=cos37=0.8
+scale(1.5,2)  a=1.5   d=2
+
+[ 1  0  10       [ 0.8  -0.6  0        [ 1.5  0    0          [ 1.2  -1.2  10
+  0  1  20   *     0.6  0.8   0    *     0    2    0     =      0.9  1.6   20
+  0  0  1 ]        0    0     1 ]        0    0    1 ]          0    0     1  ]
